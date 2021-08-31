@@ -7,7 +7,7 @@ class CarModel(db.Model):
     color = db.Column(db.String(40))
     clean = db.Column(db.Boolean)
     hours = db.Column(db.Integer)
-    #price = db.Column(db.Float(precision=2))
+    price = db.Column(db.Float(precision=2))
 
 
     def __init__(self, licensePlateNumber, color, clean, hours):
@@ -19,11 +19,11 @@ class CarModel(db.Model):
 
     def json(self):
         return {
-            'licensePlateNumber': self.licensePlateNumber, 
+            'license plate number': self.licensePlateNumber, 
             'color': self.color, 
             'clean': self.clean,
-            'hours': self.hours
-            #'price': self.price
+            'hours': self.hours,
+            'price': 7 * self.hours
             }
 
     @classmethod

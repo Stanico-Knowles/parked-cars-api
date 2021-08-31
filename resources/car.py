@@ -1,9 +1,11 @@
-from flask_restful import Resource, reqparse
+from flask_restful import Resource, reqparse, request
 from models.car import CarModel
 
 
 class Car(Resource):
+
     parser = reqparse.RequestParser()
+
     parser.add_argument('color',
                         type=str.lower,
                         required=True,
@@ -24,6 +26,7 @@ class Car(Resource):
         car = CarModel.findByPlate(licensePlateNumber)
         if car:
             return car.json()
+        return {'message': 'That Item Does Not Exist.'}
 
     def post(self, licensePlateNumber):
         if CarModel.findByPlate(licensePlateNumber):
@@ -32,19 +35,6 @@ class Car(Resource):
         data = Car.parser.parse_args()
 
         car = CarModel(licensePlateNumber, **data)
-
-        """if Car.color == 'red' or 'green' or 'black':
-            if Car.clean == True:
-                CarModel.price = 0
-            elif Car.clean == False:
-                CarModel.price == (7 * 0.5) * Car.hours
-        elif Car.color != 'red' or 'green' or 'black':
-            if Car.clean == True:
-                CarModel.price = 7 * Car.hours
-            elif Car.clean == False:
-                CarModel.price = (7 * 2) * Car.hours
-        else:
-            return {'message': "Please Enter Valid Information"}, 400"""
         
         try:
             car.saveToDB()
@@ -66,11 +56,14 @@ class Car(Resource):
         car = CarModel.findByPlate(licensePlateNumber)
 
         if car:
-            car.price = data['price']
+            car.color = data['color']
+            car.hours = data['hours']
+            car.clean = data['clean'] 
+
         else:
             car = CarModel(licensePlateNumber, **data)
 
-        car.save_to_db()
+        car.saveToDB()
 
         return car.json()
 
