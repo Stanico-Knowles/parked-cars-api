@@ -5,25 +5,25 @@ class CarModel(db.Model):
 
     licensePlateNumber = db.Column(db.String, primary_key=True)
     color = db.Column(db.String(40))
-    isDirty = db.Column(db.Boolean)
-    hoursParked = db.Column(db.Integer)
-    price = db.Column(db.Float(precision=2))
+    clean = db.Column(db.Boolean)
+    hours = db.Column(db.Integer)
+    #price = db.Column(db.Float(precision=2))
 
 
-    def __init__(self, licensePlateNumber, color, isDirty, hoursParked, price):
+    def __init__(self, licensePlateNumber, color, clean, hours):
         self.licensePlateNumber = licensePlateNumber
         self.color = color
-        self.isDirty = isDirty
-        self.hoursParked = hoursParked
-        self.price = price
+        self.clean = clean
+        self.hours = hours
+        #self.price = price
 
     def json(self):
         return {
             'licensePlateNumber': self.licensePlateNumber, 
             'color': self.color, 
-            'isDirty': self.isDirty,
-            'hoursParked': self.hoursParked,
-            'price': self.price
+            'clean': self.clean,
+            'hours': self.hours
+            #'price': self.price
             }
 
     @classmethod
