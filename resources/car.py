@@ -61,9 +61,10 @@ class Car(Resource):
             car.color = data['color']
             car.hours = data['hours']
             car.clean = data['clean'] 
+            car.price = calcPrice(car.color, car.hours, car.clean)
 
         else:
-            car = VehicleRepo(licensePlateNumber, calcPrice, **data)
+            car = VehicleRepo(licensePlateNumber, **data)
 
         car.saveToDB()
 
