@@ -1,6 +1,20 @@
 from db import db
 
-class CarModel(db.Model):
+def calcPrice(color, hours, clean):
+
+        if color == 'red' or color == 'green' or color == 'black':
+            if clean == True:
+                return 0
+            elif clean == False:
+                return 3.5 * hours
+        else:
+            if clean == True:
+                return 7 * hours
+            elif clean == False:
+                return 14 * hours
+
+
+class VehicleRepo(db.Model):
     __tablename__ = 'cars'
 
     licensePlateNumber = db.Column(db.String, primary_key=True)
@@ -15,16 +29,17 @@ class CarModel(db.Model):
         self.color = color
         self.clean = clean
         self.hours = hours
-        #self.price = price
+        self.price = calcPrice(color, hours, clean)
 
-    def json(self):
+    def toJson(self):
         return {
             'license plate number': self.licensePlateNumber, 
             'color': self.color, 
             'clean': self.clean,
             'hours': self.hours,
-            'price': 7 * self.hours
-            }
+            'price': self.price
+    }
+        
 
     @classmethod
     def findByPlate(cls,licensePlateNumber):

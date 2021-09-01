@@ -1,5 +1,5 @@
-from flask_restful import Resource, reqparse, request
-from models.car import CarModel
+from flask_restful import Resource, reqparse
+from models.car import VehicleRepo, calcPrice
 
 
 class Car(Resource):
@@ -8,6 +8,7 @@ class Car(Resource):
 
     parser.add_argument('color',
                         type=str.lower,
+                        trim=True,
                         required=True,
                         help="This Field Is Required!"
                         )
@@ -23,37 +24,38 @@ class Car(Resource):
                         )
 
     def get(self, licensePlateNumber):
-        car = CarModel.findByPlate(licensePlateNumber)
+        car = VehicleRepo.findByPlate(licensePlateNumber)
         if car:
             return car.json()
         return {'message': 'That Item Does Not Exist.'}
 
     def post(self, licensePlateNumber):
-        if CarModel.findByPlate(licensePlateNumber):
-            return {'message': "That Car Is Already Stored In Our Database."}, 400
-        
-        data = Car.parser.parse_args()
-
-        car = CarModel(licensePlateNumber, **data)
         
         try:
-            car.saveToDB()
-        except:
-            return {"message": "An error occurred inserting the car."}, 500
+            if VehicleRepo.findByPlate(licensePlateNumber):
+                return {'message': "Sorry, this car is currently inside the garage."}, 400
 
-        return car.json(), 201
+            data = Car.parser.parse_args()
+            car = VehicleRepo(licensePlateNumber, **data)
+
+            car.saveToDB() 
+
+        except:
+            return 
+
+        return car.toJson(), 201
 
     def delete(self, licensePlateNumber):
-        car = CarModel.findByPlate(licensePlateNumber)
+        car = VehicleRepo.findByPlate(licensePlateNumber)
         if car:
             car.deleteFromDB()
             return {'message': 'Car was deleted.'}
         return {'message': 'Car not found.'}, 404
     
     def put(self, licensePlateNumber):
-        data = Car.parser.parse_args()
 
-        car = CarModel.findByPlate(licensePlateNumber)
+        data = Car.parser.parse_args()
+        car = VehicleRepo.findByPlate(licensePlateNumber)
 
         if car:
             car.color = data['color']
@@ -61,13 +63,13 @@ class Car(Resource):
             car.clean = data['clean'] 
 
         else:
-            car = CarModel(licensePlateNumber, **data)
+            car = VehicleRepo(licensePlateNumber, calcPrice, **data)
 
         car.saveToDB()
 
-        return car.json()
+        return car.toJson()
 
 
 class CarsListed(Resource):
     def get(self):
-        return {'cars': list(map(lambda x: x.json(), CarModel.query.all()))}
+        return {'cars': list(map(lambda x: x.toJson(), VehicleRepo.query.all()))}
