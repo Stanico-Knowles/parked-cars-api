@@ -26,7 +26,7 @@ class Car(Resource):
     def get(self, licensePlateNumber):
         car = VehicleRepo.findByPlate(licensePlateNumber)
         if car:
-            return car.json()
+            return car.toJSON()
         return {'message': 'That Item Does Not Exist.'}
 
     def post(self, licensePlateNumber):
@@ -43,7 +43,7 @@ class Car(Resource):
         except:
             return 
 
-        return car.toJson(), 201
+        return car.toJSON(), 201
 
     def delete(self, licensePlateNumber):
         car = VehicleRepo.findByPlate(licensePlateNumber)
@@ -68,9 +68,9 @@ class Car(Resource):
 
         car.saveToDB()
 
-        return car.toJson()
+        return car.toJSON()
 
 
 class CarsListed(Resource):
     def get(self):
-        return {'cars': list(map(lambda x: x.toJson(), VehicleRepo.query.all()))}
+        return {'cars': list(map(lambda x: x.toJSON(), VehicleRepo.query.all()))}

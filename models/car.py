@@ -31,7 +31,7 @@ class VehicleRepo(db.Model):
         self.hours = hours
         self.price = calcPrice(color, hours, clean)
 
-    def toJson(self):
+    def toJSON(self):
         return {
             'license plate number': self.licensePlateNumber, 
             'color': self.color, 
