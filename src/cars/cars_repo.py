@@ -14,7 +14,6 @@ class CarRepo():
         return self.model_object_to_cars_dto(car=car)
     
     def get_all_cars(self, search_filters: CarSearchFiltersDto) -> list[CarsDto]:
-        print(search_filters)
         cars = Car.query
         if search_filters.color:
             cars = cars.filter_by(color=search_filters.color)
