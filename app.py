@@ -1,8 +1,8 @@
-from http.client import HTTPException
 import os
 import sys
 from src import app
 from flask import json
+from werkzeug.exceptions import HTTPException
 
 ROOT_PATH = os.path.dirname(os.path.realpath(__file__))
 os.environ.update({'ROOT_PATH': ROOT_PATH})
