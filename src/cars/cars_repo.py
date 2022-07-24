@@ -1,3 +1,4 @@
+from typing import List, Tuple
 from cars.dto.search_filters_dto import CarSearchFiltersDto
 from src.cars.cars_model import Car
 from src.cars.dto.cars_dto import CarsDto
@@ -13,7 +14,7 @@ class CarRepo():
         self.db.session.commit()
         return self.model_object_to_cars_dto(car=car)
     
-    def get_all_cars(self, search_filters: CarSearchFiltersDto, dynamic_filters: dict) -> list[CarsDto]:
+    def get_all_cars(self, search_filters: CarSearchFiltersDto, dynamic_filters: dict) -> Tuple[List[CarsDto], int]:
         cars = Car.query.filter_by(**dynamic_filters)
         if search_filters.max_hours:
             cars = cars.filter(Car.hours <= search_filters.max_hours)
@@ -24,7 +25,7 @@ class CarRepo():
         if search_filters.min_price:
             cars = cars.filter(Car.price >= search_filters.min_price)
         cars = cars.paginate(page=search_filters.page, per_page=search_filters.page_size, error_out=False, max_per_page=20)
-        return [self.model_object_to_cars_dto(car=car) for car in cars.items]
+        return [self.model_object_to_cars_dto(car=car) for car in cars.items], cars.total
     
     def get_car_by_license_plate(self, license_plate: str) -> CarsDto:
         car: Car = Car.query.filter_by(license_plate=license_plate).first()

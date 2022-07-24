@@ -1,4 +1,4 @@
-from typing import Union
+from typing import List, Tuple, Union
 from cars.dto.search_filters_dto import CarSearchFiltersDto
 from src.cars.cars_repo import CarRepo
 from src.cars.dto.cars_dto import CarsDto
@@ -24,7 +24,7 @@ class CarService():
             raise BadRequest(CarsCustomExceptions.CAR_ALREADY_EXISTS.value)
         return self.car_repo.add_car(car=car)
     
-    def get_cars(self, search_filters: CarSearchFiltersDto) -> list[CarsDto]:
+    def get_cars(self, search_filters: CarSearchFiltersDto) -> Tuple[List[CarsDto], int]:
         dynamic_filters = self.populate_search_filters_dict({
             'color': search_filters.color,
             'is_clean': search_filters.is_clean,

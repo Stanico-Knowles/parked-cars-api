@@ -22,8 +22,8 @@ def get_cars():
         request.args.get('page') if request.args.get('page') else 1,
         request.args.get('page_size') if request.args.get('page_size') else 10
     )
-    cars: list[CarsDto] = CarService().get_cars(filters_dto)
-    return jsonify(cars), 200
+    cars, total_results = CarService().get_cars(filters_dto)
+    return jsonify(cars=cars, total_results=total_results), 200
 
 @app.route('/api/cars/<string:license_plate>', methods=['GET'])
 def get_car_by_license_plate(license_plate):
