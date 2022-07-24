@@ -37,14 +37,20 @@ python -m venv venv
 
 ### Activate virtual environment
 
-``` venv\Scripts\activate.bat ```
+``` 
+venv\Scripts\activate.bat 
+```
 
 ### Install required dependencies
 
-``` pip install -r requirements.txt ```
+``` 
+pip install -r requirements.txt 
+```
 
 ### Run project
 
-``` python app.py ```
+``` 
+python app.py 
+```
 
 <p>You can test this API with postman or create your frontend.</p>
