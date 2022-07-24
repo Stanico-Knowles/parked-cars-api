@@ -39,7 +39,10 @@ class CarService():
         self._check_if_hours_is_present(car.hours)
         price = self.calculate_price(car.color, car.hours, car.is_clean)
         car.price = price
-        return self.car_repo.update_car(car)    
+        car = self.car_repo.update_car(car)    
+        if not car:
+            raise NotFound(CarsCustomExceptions.CAR_NOT_IN_GARAGE.value)
+        return car
     
     def delete_car(self, license_plate):
         self._check_if_license_plate_is_present(license_plate)
