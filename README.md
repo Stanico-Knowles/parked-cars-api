@@ -52,5 +52,3 @@ pip install -r requirements.txt
 ``` 
 python app.py 
 ```
-
-<p>You can test this API with postman or create your frontend.</p>
