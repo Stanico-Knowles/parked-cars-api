@@ -63,17 +63,27 @@ class CarService():
     def _check_if_is_clean_is_present(self, is_clean: bool) -> None:
         if is_clean is None:
             raise BadRequest(CarsCustomExceptions.IS_CLEAN_IS_REQUIRED.value)
+        self._check_is_clean_is_type_boolean(is_clean)
+    
+    def _check_is_clean_is_type_boolean(self, is_clean: str) -> None:
+        if not isinstance(is_clean, bool):
+            raise BadRequest(CarsCustomExceptions.IS_CLEAN_IS_REQUIRED.value)
     
     def _check_if_hours_is_present(self, hours: int) -> None:
         if not hours:
             raise BadRequest(CarsCustomExceptions.HOURS_IS_REQUIRED.value)
+    
+    def _check_hours_is_type_int(self, hours: str) -> None:
+        if not isinstance(hours, int):
+            raise BadRequest(CarsCustomExceptions.INVALID_TYPE_FOR_HOURS.value)
 
     def calculate_price(self, color: str, hours: int, clean: str) -> Union[float, int]:
-            if color in [color.value for color in LikedColors]:
-                if clean == True:
-                    return 0
-                return 3.5 * hours
-            else:
-                if clean == True:
-                    return 7 * hours
-                return 14 * hours
+        self._check_hours_is_type_int(hours)
+        if color in [color.value for color in LikedColors]:
+            if clean == True:
+                return 0
+            return 3.5 * hours
+        else:
+            if clean == True:
+                return 7 * hours
+            return 14 * hours
