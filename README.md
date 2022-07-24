@@ -29,9 +29,19 @@
 
 <p>No need to install any databases or community server packages. Everything required is inside the project. Simply open your code editor and terminal, then run the following commands.</p>
 
+### Install the virtual environment 
+
+``` python -m venv venv ```
+
+### Activate virtual environment
+
 ``` venv\Scripts\activate.bat ```
 
+### Install required dependencies
+
 ``` pip install -r requirements.txt ```
+
+### Run project
 
 ``` python app.py ```
 
