@@ -22,9 +22,9 @@ class CarRepo():
         if search_filters.hours:
             cars = cars.filter_by(hours=search_filters.hours)
         if search_filters.max_price:
-            cars = cars.filter_by(price=search_filters.max_price)
+            cars = cars.filter(Car.price<=search_filters.max_price)
         if search_filters.min_price:
-            cars = cars.filter_by(price=search_filters.min_price)
+            cars = cars.filter(Car.price>=search_filters.min_price)
         cars = cars.paginate(page=search_filters.page, per_page=search_filters.page_size, error_out=False, max_per_page=20)
         return [self.model_object_to_cars_dto(car=car) for car in cars.items]
     
