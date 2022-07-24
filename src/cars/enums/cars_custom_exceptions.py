@@ -7,3 +7,5 @@ class CarsCustomExceptions(Enum):
     LICENSE_PLATE_IS_REQUIRED = "License plate is required"
     CAR_ALREADY_EXISTS = "Car already in garage"
     CAR_NOT_IN_GARAGE = "Car not in garage"
+    PRICE_CALCULATION_ERROR = "Price calculation error"
+    INVALID_TYPE_FOR_HOURS = "Invalid input for hours"
