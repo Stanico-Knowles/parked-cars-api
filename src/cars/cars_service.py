@@ -1,4 +1,5 @@
 from typing import Union
+from cars.dto.search_filters_dto import CarSearchFiltersDto
 from src.cars.cars_repo import CarRepo
 from src.cars.dto.cars_dto import CarsDto
 from src.cars.enums.cars_custom_exceptions import CarsCustomExceptions
@@ -14,17 +15,17 @@ class CarService():
         return CarsDto(license_plate=car['license_plate'], color=car['color'], is_clean=car['is_clean'], hours=car['hours'])
 
     def add_car(self, car: CarsDto) -> CarsDto:
-        self._check_if_color_is_present(car.color)
-        self._check_if_is_clean_is_present(car.is_clean)
-        self._check_if_hours_is_present(car.hours)
-        price = self.calculate_price(car.color, car.hours, car.is_clean)
+        self._check_if_color_is_present(color=car.color)
+        self._check_if_is_clean_is_present(is_clean=car.is_clean)
+        self._check_if_hours_is_present(hours=car.hours)
+        price = self.calculate_price(color=car.color, hours=car.hours, clean=car.is_clean)
         car.price = price
-        if self.car_repo.get_car_by_license_plate(car.license_plate):
+        if self.car_repo.get_car_by_license_plate(license_plate=car.license_plate):
             raise BadRequest(CarsCustomExceptions.CAR_ALREADY_EXISTS.value)
-        return self.car_repo.add_car(car)
+        return self.car_repo.add_car(car=car)
     
-    def get_cars(self) -> list[CarsDto]:
-        return self.car_repo.get_all_cars()
+    def get_cars(self, search_filters: CarSearchFiltersDto) -> list[CarsDto]:
+        return self.car_repo.get_all_cars(search_filters=search_filters)
     
     def get_car_by_license_plate(self, license_plate: str) -> CarsDto:
         self._check_if_license_plate_is_present(license_plate)
