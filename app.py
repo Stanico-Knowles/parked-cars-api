@@ -1,23 +1,28 @@
-from flask import Flask
-from flask_restful import Api
+from http.client import HTTPException
+import os
+import sys
+from src import app
+from flask import json
 
-from resources.car import Car, CarsListed
+ROOT_PATH = os.path.dirname(os.path.realpath(__file__))
+os.environ.update({'ROOT_PATH': ROOT_PATH})
+sys.path.append(os.path.join(ROOT_PATH, 'src'))
 
-app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data.db'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['PROPAGATE_EXCEPTIONS'] = True
-app.secret_key = 'saknowles'
-api = Api(app)
-
-@app.before_first_request
-def create_tables():
-    db.create_all()
-
-api.add_resource(Car, '/car/<string:licensePlateNumber>')
-api.add_resource(CarsListed, '/cars')
+@app.errorhandler(HTTPException)
+def handle_exception(e):
+    """Return JSON instead of HTML for HTTP errors."""
+    # start with the correct headers and status code from the error
+    response = e.get_response()
+    # replace the body with JSON
+    response.data = json.dumps({
+        "code": e.code,
+        "name": e.name,
+        "description": e.description,
+    })
+    response.content_type = "application/json"
+    return response
 
 if __name__ == '__main__':
-    from db import db
+    from src.database.database import db
     db.init_app(app)
     app.run(debug=True, port=5000)
