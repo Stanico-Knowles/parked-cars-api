@@ -1,6 +1,6 @@
 # Parked Cars API
 
-<p>This is a cool practice project my senior gave me when I began my current role in August 2021. I was new to flask but I would never turn down a challenge. It handles CRUD operations using a REST API with Python Flask and SQLite. I used SQLAlchemy for Object-Relational Mapping. I decided redo this project using JavaScript a few months later and refactored it, using a different project structure. <a href='https://github.com/Stanico-Knowles/parking-garage-api'>Check it out here.</a></p>
+<p>This is a cool practice project my senior gave me when I began my current role in August 2021. I was new to flask but I would never turn down a challenge. It handles CRUD operations using a REST API with Python Flask and SQLite. I used SQLAlchemy for Object-Relational Mapping. I decided redo this project using JavaScript a few months later. <a href='https://github.com/Stanico-Knowles/parking-garage-api'>Check it out here.</a></p>
 
 ### Requirements.
 
