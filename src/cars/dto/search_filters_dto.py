@@ -1,11 +1,12 @@
-from dataclasses import dataclass
-
+from dataclasses import dataclass, field
+from typing import Dict
 
 @dataclass
 class CarSearchFiltersDto:
     color: str = None
     is_clean: bool = None
-    hours: int = None
+    max_hours: int = None
+    min_hours: int = None
     max_price: float = None
     min_price: float = None
     page: int = 1

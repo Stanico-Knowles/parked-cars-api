@@ -25,7 +25,11 @@ class CarService():
         return self.car_repo.add_car(car=car)
     
     def get_cars(self, search_filters: CarSearchFiltersDto) -> list[CarsDto]:
-        return self.car_repo.get_all_cars(search_filters=search_filters)
+        dynamic_filters = self.populate_search_filters_dict({
+            'color': search_filters.color,
+            'is_clean': search_filters.is_clean,
+        })
+        return self.car_repo.get_all_cars(search_filters=search_filters, dynamic_filters=dynamic_filters)
     
     def get_car_by_license_plate(self, license_plate: str) -> CarsDto:
         self._check_if_license_plate_is_present(license_plate)
@@ -52,6 +56,9 @@ class CarService():
         if not car:
             raise NotFound(CarsCustomExceptions.CAR_NOT_IN_GARAGE.value)
         return self.car_repo.delete_car(license_plate)
+    
+    def populate_search_filters_dict(self, search_filters: dict) -> dict:
+        return {key : value for key, value in search_filters.items() if value}
     
     def _check_if_license_plate_is_present(self, license_plate: str) -> None:
         if not license_plate:

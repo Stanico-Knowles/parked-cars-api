@@ -15,7 +15,8 @@ def get_cars():
     filters_dto = CarSearchFiltersDto(
         request.args.get('color') if request.args.get('color') else None, 
         request.args.get('is_clean') if request.args.get('is_clean') else None, 
-        request.args.get('hours') if request.args.get('hours') else None, 
+        request.args.get('max_hours') if request.args.get('max_hours') else None, 
+        request.args.get('min_hours') if request.args.get('min_hours') else None,
         request.args.get('max_price') if request.args.get('max_price') else None,
         request.args.get('min_price') if request.args.get('min_price') else None,
         request.args.get('page') if request.args.get('page') else 1,
