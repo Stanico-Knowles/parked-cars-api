@@ -1,4 +1,4 @@
-from typing import List, Tuple
+from typing import List, Tuple, Union
 from cars.dto.search_filters_dto import CarSearchFiltersDto
 from src.cars.cars_model import Car
 from src.cars.dto.cars_dto import CarsDto
@@ -24,16 +24,17 @@ class CarRepo():
             cars = cars.filter(Car.price <= search_filters.max_price)
         if search_filters.min_price:
             cars = cars.filter(Car.price >= search_filters.min_price)
+            """https://flask-sqlalchemy.palletsprojects.com/en/2.x/api/#flask_sqlalchemy.BaseQuery.paginate"""
         cars = cars.paginate(page=search_filters.page, per_page=search_filters.page_size, error_out=False, max_per_page=20)
         return [self.model_object_to_cars_dto(car=car) for car in cars.items], cars.total
     
-    def get_car_by_license_plate(self, license_plate: str) -> CarsDto:
+    def get_car_by_license_plate(self, license_plate: str) -> Union[CarsDto, None]:
         car: Car = Car.query.filter_by(license_plate=license_plate).first()
         if car:
             return self.model_object_to_cars_dto(car=car)
         return None
     
-    def update_car(self, updated_car: CarsDto) -> CarsDto:
+    def update_car(self, updated_car: CarsDto) -> Union[CarsDto, None]:
         car: Car = Car.query.filter_by(license_plate=updated_car.license_plate).first()
         if car:
             car.color = updated_car.color
